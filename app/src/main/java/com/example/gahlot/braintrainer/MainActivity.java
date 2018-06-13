@@ -8,8 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import org.w3c.dom.Text;
 
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button startButton;
     RelativeLayout gamelogic;
+    GridView AnswerBox;
     TextView resultText;
     TextView pointText;
     TextView textview;
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     int score = 0;
     int numberofquestions = 0;
     Button button0,button1,button2,button3,playAgainbutton;
+    private InterstitialAd mInterstitialAd;
 
     public void playAgain(View view) {
 
@@ -53,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 timer.setText("0s");
                 resultText.setText("Done");
                 playAgainbutton.setVisibility(View.VISIBLE);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
 
             }
         }.start();
@@ -131,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
         resultText = (TextView)findViewById(R.id.resultTextView);
         pointText = (TextView)findViewById(R.id.pointTextView);
         playAgainbutton = (Button)findViewById(R.id.playAginButton);
+
+        MobileAds.initialize(this, "ca-app-pub-6234849788191173~5983138435");
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-6234849788191173/7843015017");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
     }
 }
